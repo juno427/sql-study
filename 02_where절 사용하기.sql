@@ -160,6 +160,44 @@ SELECT *
 FROM employees
 WHERE manager_id IS NULL;
 
--- ORDER BY
+-- ORDER BY 열 이름 [ASC or DESC]
+-- ASC : 오름차순, DESC : 내림차순
+-- ORDER BY 열 + ASC or DESC 열의 오름차순 내림차순 정렬
+SELECT *
+FROM employees
+ORDER BY employee_id; -- ASC 기본 정렬은 생략가능
 
+SELECT *
+FROM employees
+ORDER BY employee_id DESC;
 
+-- 정렬 열이 2개 이상일 때 첫번째 열로 정렬 후 두번째 열 정렬
+SELECT department_id, employee_id, first_name, last_name
+FROM employees
+ORDER BY department_id, employee_id;
+
+-- 별칭으로 정렬
+SELECT department_id, last_name, salary*12 연봉
+FROM employees
+ORDER BY 연봉 DESC;
+
+SELECT department_id, last_name, salary*12 연봉
+FROM employees
+ORDER BY 3 DESC;
+
+-- 예제 1) employees 테이블에서 employee_id, first_name, last_name을 출력하고 employees_id를 기준으로 내림차순 정렬하세요.
+SELECT employee_id, first_name, last_name
+FROM employees
+ORDER BY employee_id DESC;
+
+-- 예제 2) employees 테이블에서 job_id에 CLERK란 단어가 들어가는 직원들의 salary가 높은 순으로 정렬하세요.
+SELECT *
+FROM employees
+WHERE job_id LIKE '%CLERK%'
+ORDER BY salary DESC;
+
+-- 예제 3) employees 테이블에서 employee_id(직원번호)가 120에서 150번까지 직원을 부서번호(department_id)가 큰 순으로 정렬하고 부서번호가 같을시 월급(salary)이 큰 순으로 정렬하라.
+SELECT employee_id, first_name, department_id, salary
+FROM employees
+WHERE employee_id BETWEEN 120 AND 150
+ORDER BY Department_id DESC, salary DESC;
