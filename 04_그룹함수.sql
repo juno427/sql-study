@@ -58,11 +58,23 @@ HAVING COUNT(*) > 5; -- 사원수 5명이 넘는 부서
 -- 예제 1) 아래 예제는 직종별 평균 월급이 $10000을 초과하는 직종에 대해서 job_id와 월 굽여 합계를 조회하는 예이다. 단 어카운트 매니저(AC_MGR)은 제외하고 월 급여 합계로 내림차순 정렬하시오.
 SELECT job_id 직종, SUM(salary) 월급여합계
 FROM employees
-WHERE job_id != AC_MGR
+WHERE job_id != 'AC_MGR'
 GROUP BY job_id
-HAVING AVG(salary) > 10000;
+HAVING AVG(salary) > 10000
+ORDER BY 월급여합계 DESC;
 
 -- 예제 2) 부서번호 40을 제외한 부서별 평균 급여가 7000 이하인 부서들의 평균 급여를 출력
+SELECT department_id 부서번호, ROUND(AVG(salary)) 평균급여
+FROM employees
+WHERE department_id != 40
+GROUP BY department_id
+HAVING AVG(salary) <= 7000;
 
 -- 예제 3) 직종별로 월급(salary)의 합계가 13000 이상인 직종을 출력하라. 급여총액을 내림차순으로 정렬하고, 직종(job_id)에 'REP' 들어있는 직종은 제외한다.
-
+SELECT job_id 직업번호, SUM(salary) 급여합계
+FROM employees
+WHERE job_id
+NOT LIKE '%REP%'
+GROUP BY job_id
+HAVING SUM(salary) >= 13000
+ORDER BY 급여합계 DESC;
