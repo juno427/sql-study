@@ -165,20 +165,61 @@ ORDER BY deptno ASC, sal DESC;
 SELECT deptno, ename, sal
 FROM emp
 ORDER BY deptno DESC, ename ASC, sal DESC;
+            -- deptno DESC, ename, sal DESC;
 
---연습문제 33 @
-SELECT ename, sal, NVL(COMM, 0) bonus, deptno
+-- 연습문제 33 @
+SELECT ename, sal, ROUND(sal*0.13) bonus, deptno
 FROM emp
 WHERE deptno = 10;
 
+-- 연습문제 34 @
+SELECT ename, sal, nvl(COMM, 0), sal+nvl(comm, 0) TOTAL
+FROM emp
+ORDER BY TOTAL DESC;
 
+--연습문제 35
+SELECT ename, sal, TO_char(sal*0.15, '$999.9') 회비
+FROM emp
+WHERE sal BETWEEN 1500 AND 3000; 
 
+-- 연습문제 36) 사원수가 5명이 넘는 부서의 부서명과 사원수 조회(조인필요)
+SELECT d.dname, count(*)                   -- SELECT d.dname, count(e.empno)
+FROM emp e JOIN dept d ON e.deptno = d.deptno   -- FROM emp e JOIN dept d ON e.deptno = d.deptno
+GROUP BY d.dname                                -- GROUP BY d.dname
+HAVING count(*) > 5;                      -- HAVING count(e.empno) > 5;
 
+-- 연습문제 37) 직업별 급여합계가 5000을 초과한느 각 직무에 대해서 직무와 급여 합계를 조회.(단 판매원(SALESMAN)은 제외)
+SELECT job, sum(sal) 급여합계
+FROM emp
+WHERE job != 'SALESMAN'
+GROUP BY job
+HAVING sum(sal) > 5000;
 
+-- SELECT job, sum(sal) 급여합계
+-- FROM emp
+-- GROUP BY job
+-- HAVING sum(sal) > 5000 AND job != 'SALESMAN';
+-- → 위, 아래 차이는 'SALESMAN'을 먼저 제외하느냐, 나중에 제외하느냐(문서의 양이 방대해지면 전자가 빠름)
+ 
+-- 연습문제 38) 사원들의 사원번호(empno), 사원명(ename), 급여(sal), 급여등급(grade)을 출력하시오.(테이블 salgrade 비동등 조인)
+SELECT e.empno, e.ename, e.sal, s.grade
+from emp e JOIN salgrade s
+ON e.sal BETWEEN s.losal and s.hisal;
 
+-- 연습문제 39) 부서별(deptno)로 사원의 수와 커미션(comm)을 받은 사원의 수를 출력하여 보시오
+SELECT deptno, count(*) as 사원수, count(comm) as "커미션 받은 사원수"
+FROM emp
+GROUP BY deptno;
 
+-- 연습문제 40) 부서번호(deptno)가 10은 '총무부', 20은 '개발부', 30은 '영업부'라고 하여 이름, 부서번호, 부서명 순으로 출력하여 보시오.(decode나 case 함수 사용)
+SELECT ename, deptno, decode(deptno, 10, '총무부', 20, '개발부', 30, '영업부') 부서명
+FROM emp;
 
-
-
+-- SELECT ename, deptno, case deptno
+-- WHEN 10 THEN '총무부'
+-- WHEN 20 THEN '개발부'
+-- WHEN 30 THEN '영업부'
+-- END "부서명"
+-- FROM EMP;
 
 
