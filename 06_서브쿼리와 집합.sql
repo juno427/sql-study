@@ -87,3 +87,64 @@ WHERE (job_id, salary) IN  (SELECT job_id, min(salary)
                             FROM employees
                             GROUP BY job_id)
 ORDER BY salary DESC;
+
+-- 집합
+-- UNION 합집합 : 중복을 제거한다.(결과줄 수 115)
+SELECT employee_id 직원번호, job_id 직종
+FROM employees
+UNION
+SELECT employee_id, job_id
+FROM job_history;
+
+-- UNION ALL 합집합 : 두개의 select문의 결과를 합친다.(결과줄 수 117)
+SELECT employee_id 직원번호, job_id 직종
+FROM employees
+UNION ALL
+SELECT employee_id, job_id
+FROM job_history;
+
+-- INTERSECT 교집합
+SELECT employee_id 직원번호, job_id 직종
+FROM employees
+INTERSECT
+SELECT employee_id, job_id
+FROM job_history;
+
+-- MINUS 차집합 (결과줄 수 : 105 => 107 - 2)
+SELECT employee_id 직원번호, job_id 직종
+FROM employees
+MINUS
+SELECT employee_id, job_id
+FROM job_history;
+
+-- 예제 1) employees 테이블의 department_id 집합과 departments 테이블의 department_id 집합을
+-- UNION 연산자를 위용해 합쳐보세요.
+SELECT department_id
+FROM employees
+UNION
+SELECT department_id
+FROM departments;
+
+-- 예제 2) employees 테이블의 department_id 집합과 departments 테이블의 department_id 집합을
+-- UNION ALL 연산자를 이용해 합쳐보세요.
+SELECT department_id
+FROM employees
+UNION ALL
+SELECT department_id
+FROM departments;
+
+-- 예제 3) employees 테이블의 department_id 집합과 departments 테이블의 department_id 집합의
+-- 교집합을 INTERSECT 연산자를 이용해 출력해 보세요.
+SELECT department_id
+FROM employees
+INTERSECT
+SELECT department_id
+FROM departments;
+
+-- 예제 4) departments 테이블의 department_id 집합에서 employees 테이블의 department_id 집합을
+-- MONUS 연산자를 이용해 빼 보세요.
+SELECT department_id
+FROM employees
+MINUS
+SELECT department_id
+FROM departments;
